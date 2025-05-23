@@ -113,14 +113,6 @@ function ComponentSection({
                 ))}
               </ul>
             </CardContent>
-            <CardFooter className="pt-0">
-              <Button variant="outline" className="w-full text-sm" asChild>
-                <a href="#" className="flex items-center gap-1">
-                  <ExternalLink className="h-4 w-4" />
-                  View Documentation
-                </a>
-              </Button>
-            </CardFooter>
           </Card>
         </div>
       </div>
