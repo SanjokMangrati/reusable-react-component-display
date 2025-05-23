@@ -147,11 +147,11 @@ export function ResponsiveCardGrid<T extends CardItem>({
         return result
     }, [items, activeSort, activeFilter])
 
-    const gridCols = {
+    const gridCols = useMemo( () =>({
         sm: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6",
         md: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
         lg: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-    }
+    }),[])
 
     const gapSize = {
         sm: "gap-2",

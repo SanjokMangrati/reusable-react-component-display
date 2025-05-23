@@ -8,9 +8,9 @@ import { DataTable } from "@/components/data-table/data-table"
 import { ResponsiveCardGrid } from "@/components/responsive-card-grid/responsive-card-grid"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
-import { Code, Copy, Check, Info, Star, ExternalLink, ChevronDown, ChevronUp } from "lucide-react"
+import { Code, Copy, Check, Info, Star, ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 //Code snippet section

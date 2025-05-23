@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useMemo } from "react"
 import { useVirtual } from "react-virtual"
 import {
     useReactTable,
@@ -79,18 +79,31 @@ export function DataTable<T extends Record<string, unknown>>({
     const [currentPage, setCurrentPage] = useState(0)
     const tableContainerRef = useRef<HTMLDivElement>(null)
 
-    const totalPages = Math.ceil(data.length / pageSize)
-    const pageData = data.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
-
-    const columnHelper = createColumnHelper<T>()
-    const tableColumns = columns.map((col) => {
+    const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize])
+const pageData = useMemo(
+  () => data.slice(currentPage * pageSize, (currentPage + 1) * pageSize),
+  [data, currentPage, pageSize],
+)
+const columnHelper = useMemo(() => createColumnHelper<T>(), [])
+    const tableColumns = useMemo(() => columns.map((col) => {
         return columnHelper.accessor((row) => row[col.key], {
             id: col.key,
             header: col.title,
             cell: (info) => (col.renderCell ? col.renderCell(info.row.original) : info.getValue()),
             size: col.width,
         })
-    })
+    }), [columnHelper, columns])
+
+    const handleSortingChange = useCallback(
+        (updater: any) => {
+          const newSorting = typeof updater === "function" ? updater(sorting) : updater
+          setSorting(newSorting)
+          if (newSorting.length > 0 && onSort) {
+            onSort(newSorting[0].id, newSorting[0].desc ? "desc" : "asc")
+          }
+        },
+        [sorting, onSort],
+      )
 
     const table = useReactTable({
         data: pageData,
@@ -98,13 +111,7 @@ export function DataTable<T extends Record<string, unknown>>({
         state: {
             sorting,
         },
-        onSortingChange: (updater) => {
-            const newSorting = typeof updater === "function" ? updater(sorting) : updater
-            setSorting(newSorting)
-            if (newSorting.length > 0 && onSort) {
-                onSort(newSorting[0].id, newSorting[0].desc ? "desc" : "asc")
-            }
-        },
+        onSortingChange: (updater) => {handleSortingChange(updater)},
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
     })
@@ -123,9 +130,15 @@ export function DataTable<T extends Record<string, unknown>>({
     const paddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0
     const paddingBottom = virtualRows.length > 0 ? totalSize - virtualRows[virtualRows.length - 1].end : 0
 
-    const goToPage = (page: number) => {
-        setCurrentPage(Math.max(0, Math.min(page, totalPages - 1)))
-    }
+const goToPage = useCallback(
+    (page: number) => {
+      const newPage = Math.max(0, Math.min(page, totalPages - 1))
+      if (newPage !== currentPage) {
+        setCurrentPage(newPage)
+      }
+    },
+    [totalPages, currentPage],
+  )
 
     return (
         <div className={cn("flex flex-col space-y-4", className)}>
