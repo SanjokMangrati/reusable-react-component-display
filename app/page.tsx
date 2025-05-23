@@ -158,7 +158,7 @@ export default function Page() {
     price: Math.floor(Math.random() * 100) + 10,
     category: ["Electronics", "Clothing", "Home", "Books", "Toys"][Math.floor(Math.random() * 5)],
     rating: (Math.random() * 5).toFixed(1),
-    image: `/placeholder.svg?height=200&width=200&text=Product+${i + 1}`,
+    image: `/landscape-placeholder.svg?height=200&width=200&text=Product+${i + 1}`,
     featured: Math.random() > 0.7,
     discount: Math.random() > 0.7 ? Math.floor(Math.random() * 50) + 10 : 0,
   }))
@@ -168,7 +168,7 @@ export default function Page() {
     name: [`Alex Johnson`, `Sam Smith`, `Jordan Lee`, `Casey Taylor`][i],
     role: [`CEO`, `CTO`, `Designer`, `Developer`][i],
     bio: `Experienced professional with ${Math.floor(Math.random() * 15) + 2} years in the industry.`,
-    image: `/placeholder.svg?height=300&width=300&text=Team+Member+${i + 1}`,
+    image: `/landscape-placeholder.svg?height=300&width=300&text=Team+Member+${i + 1}`,
     department: ["Executive", "Technology", "Design", "Engineering"][i],
   }))
 
